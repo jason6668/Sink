@@ -150,7 +150,7 @@ export function generateUnsafeWarningHtml(slug: string, targetUrl: string, optio
 </html>`
 }
 
-export function generateOgHtml(link: Link, targetUrl: string, baseUrl: string): string {
+export function generateOgHtml(link: Link, targetUrl: string | undefined, baseUrl: string): string {
   const { title, tags } = buildMetaTags(link, baseUrl)
 
   return `<!DOCTYPE html>
@@ -159,10 +159,10 @@ export function generateOgHtml(link: Link, targetUrl: string, baseUrl: string): 
     <meta charset="utf-8">
     <title>${escape(title)}</title>
     ${tags}
-    <meta http-equiv="refresh" content="1;url=${escape(targetUrl)}">
+    ${targetUrl ? `<meta http-equiv="refresh" content="1;url=${escape(targetUrl)}">` : ''}
 </head>
 <body>
-    <p>Redirecting to <a href="${escape(targetUrl)}">${escape(targetUrl)}</a>...</p>
+    ${targetUrl ? `<p>Redirecting to <a href="${escape(targetUrl)}">${escape(targetUrl)}</a>...</p>` : ''}
 </body>
 </html>`
 }

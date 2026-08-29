@@ -174,11 +174,25 @@ export default eventHandler(async (event) => {
         return sendRedirect(event, finalTargetUrl, +redirectStatusCode)
       }
 
-      if (isSocialBot(userAgent) && hasOgConfig(link)) {
+      if (isSocialBot(userAgent) && (hasOgConfig(link) || link.type === 'file' || link.type === 'video')) {
         const baseUrl = `${getRequestProtocol(event)}://${getRequestHost(event)}`
-        const html = generateOgHtml(link, targetUrl, baseUrl)
+        const html = generateOgHtml(link, link.type === 'file' || link.type === 'video' ? undefined : targetUrl, baseUrl)
         setHeader(event, 'Content-Type', 'text/html; charset=utf-8')
         return html
+      }
+
+      // ===== 文件 / 视频链接：从 R2 取流（密码与过期已在上方统一拦截） =====
+      if (link.type === 'video') {
+        const rawSrc = link.password
+          ? `/_file/${slug}?sig=${await signFileToken(event, link.slug)}`
+          : `/_file/${slug}`
+        setHeader(event, 'Content-Type', 'text/html; charset=utf-8')
+        setHeader(event, 'Cache-Control', 'no-store')
+        return generateVideoPlayerHtml(link, rawSrc, `${getRequestProtocol(event)}://${getRequestHost(event)}`)
+      }
+
+      if (link.type === 'file') {
+        return await streamFileFromR2(event, link)
       }
 
       if (link.cloaking) {

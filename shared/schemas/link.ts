@@ -57,6 +57,11 @@ const LinkFieldsSchema = z.object({
   password: LinkPasswordSchema.optional(),
   unsafe: z.boolean().optional(),
   geo: GeoSchema.optional(),
+  type: z.enum(['url', 'file', 'video']).optional(),
+  fileKey: z.string().trim().max(512).optional(),
+  fileName: z.string().trim().max(256).optional(),
+  fileType: z.string().trim().max(128).optional(),
+  fileSize: z.number().int().safe().optional(),
   tags: TagsSchema,
 })
 
