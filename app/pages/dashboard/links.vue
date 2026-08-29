@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AlertCircle, Database, Loader } from '@lucide/vue'
+import { AlertCircle, Database, Loader, Upload } from '@lucide/vue'
 
 definePageMeta({
   layout: 'dashboard',
@@ -23,6 +23,12 @@ onMounted(() => {
       <Teleport to="#dashboard-header-actions" defer>
         <DashboardLinksSearchDialog />
         <DashboardLinksEditorModal />
+        <DashboardFileUploadDialog>
+          <Button>
+            <Upload class="size-4" aria-hidden="true" />
+            {{ $t('dashboard.upload.button') }}
+          </Button>
+        </DashboardFileUploadDialog>
       </Teleport>
 
       <DashboardLinksFilters />

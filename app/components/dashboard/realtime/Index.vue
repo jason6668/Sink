@@ -62,6 +62,12 @@ onBeforeUnmount(() => {
         lg:absolute lg:top-0 lg:left-0
       "
     />
+    <DashboardRealtimeLiveMetrics
+      class="
+        z-10
+        lg:absolute lg:top-76 lg:left-0 lg:w-80
+      "
+    />
     <div
       class="
         aspect-square

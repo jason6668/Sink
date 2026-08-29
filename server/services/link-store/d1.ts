@@ -103,6 +103,11 @@ function rowToLink(row: LinkRow): Link {
     'password',
     'unsafe',
     'geo',
+    'type',
+    'fileKey',
+    'fileName',
+    'fileType',
+    'fileSize',
   ] as const
 
   for (const field of optionalFields) {
@@ -152,6 +157,11 @@ export function buildD1LinkValues(event: H3Event, link: Link, effectiveExpiresAt
     password: link.password ?? null,
     unsafe: link.unsafe ?? null,
     geo: link.geo ?? null,
+    type: link.type ?? null,
+    fileKey: link.fileKey ?? null,
+    fileName: link.fileName ?? null,
+    fileType: link.fileType ?? null,
+    fileSize: link.fileSize ?? null,
     normalizedUrl: withoutQuery(link.url),
     effectiveExpiresAt: effectiveExpiresAt === undefined ? getExpiration(event, link.expiration) ?? null : effectiveExpiresAt,
   }

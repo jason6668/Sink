@@ -4,7 +4,9 @@ export default eventHandler(async (event) => {
   if (!event.path.startsWith('/api/'))
     return
 
+  const queryToken = getQuery(event).access_token
   const token = getHeader(event, 'Authorization')?.replace(/^Bearer\s+/, '')
+    ?? (typeof queryToken === 'string' ? queryToken : undefined)
   if (await verifySiteToken(token, useRuntimeConfig(event).siteToken)) {
     event.context.authMethod = 'site-token'
     event.context.userID = 'root'
