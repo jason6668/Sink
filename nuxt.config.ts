@@ -15,6 +15,20 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   css: ['@/assets/css/tailwind.css'],
+  app: {
+    head: {
+      // Personal branding: every icon surface points at Ma Laoshi's logo. The
+      // PNG is served from public/ rather than the remote host so the favicon
+      // keeps working if tc.8818618.xyz is unreachable.
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '192x192', href: '/icon-192.png' },
+        { rel: 'icon', type: 'image/png', sizes: '512x512', href: '/icon-512.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'shortcut icon', href: '/favicon.ico' },
+      ],
+    },
+  },
   colorMode: {
     classSuffix: '',
   },
@@ -38,14 +52,28 @@ export default defineNuxtConfig({
     listQueryLimit: 500,
     disableBotAccessLog: false,
     disableAutoBackup: false,
+    // Storage cleanup reclaims R2 objects behind expired links and orphaned
+    // uploads. Leave it on unless an operator wants to audit the bucket by hand.
+    disableStorageCleanup: false,
     notFoundRedirect: '',
     safeBrowsingDoh: '', // Set to DoH URL to enable auto-detection, e.g. https://family.cloudflare-dns.com/dns-query
     webhookUrl: '',
     webhookSecret: '',
+    // OpenRouter powers the conversational agent and MCP tool calling. Leave the
+    // key empty to keep both surfaces disabled (they answer 501).
+    openrouterApiKey: '',
+    openrouterModel: 'qwen/qwen3-235b-a22b-thinking-2507',
+    openrouterBaseUrl: 'https://openrouter.ai/api/v1',
+    // Separate token for machine clients (MCP, n8n, Telegram bots). Falls back to
+    // siteToken when unset so a fresh deploy is not left wide open.
+    openApiToken: '',
+    licenseAdminToken: '',
+    licenseSigningSecret: '',
     public: {
       previewMode: '',
       slugDefaultLength: '6',
       kvBatchLimit: '50',
+      agentEnabled: '',
     },
   },
   routeRules: {
@@ -88,8 +116,8 @@ export default defineNuxtConfig({
     openAPI: {
       production: 'runtime',
       meta: {
-        title: 'Sink API',
-        description: 'A Simple / Speedy / Secure Link Shortener with Analytics, 100% run on Cloudflare.\n\n[Return to this Sink instance](/) · [Read the documentation](https://docs.sink.cool)',
+        title: '马老师短链 API',
+        description: '马老师专属短链系统的 HTTP API：短链、文件、图片与视频，支持密码、有效期与自动销毁。\n\n[返回首页](/)',
       },
       route: '/_docs/openapi.json',
       ui: {

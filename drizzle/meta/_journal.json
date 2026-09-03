@@ -29,6 +29,27 @@
       "when": 1784369840025,
       "tag": "0003_hesitant_namora",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1788004895867,
+      "tag": "0004_ambiguous_secret_warriors",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1788013690986,
+      "tag": "0005_mean_wasp",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788440000000,
+      "tag": "0006_brisk_license_codes",
+      "breakpoints": true
     }
   ]
 }

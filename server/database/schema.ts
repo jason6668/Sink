@@ -22,6 +22,15 @@ export const links = sqliteTable('links', {
   geo: text({ mode: 'json' }).$type<Link['geo']>(),
   normalizedUrl: text('normalized_url').notNull(),
   effectiveExpiresAt: integer('effective_expires_at'),
+  type: text({ enum: ['url', 'file', 'video'] }),
+  fileKey: text('file_key'),
+  fileName: text('file_name'),
+  fileSize: integer('file_size'),
+  fileType: text('file_type'),
+  // Burn-after-reading: destroy the link (and its R2 object) once `visits`
+  // reaches `destroyAfter`. NULL means the link never self-destructs.
+  destroyAfter: integer('destroy_after'),
+  visits: integer(),
 }, table => [
   index('links_created_at_slug_idx').on(table.createdAt, table.slug),
   index('links_created_at_desc_slug_idx').on(sql`${table.createdAt} desc`, table.slug),
@@ -58,3 +67,18 @@ export const linkMigrationRuns = sqliteTable('link_migration_runs', {
   createdAt: integer('created_at').notNull(),
   updatedAt: integer('updated_at').notNull(),
 })
+
+export const licenseCodes = sqliteTable('license_codes', {
+  id: integer().primaryKey({ autoIncrement: true }),
+  code: text().notNull().unique(),
+  status: text({ enum: ['unused', 'activated', 'revoked'] }).notNull().default('unused'),
+  deviceId: text('device_id'),
+  licenseTokenHash: text('license_token_hash'),
+  createdAt: integer('created_at').notNull(),
+  activatedAt: integer('activated_at'),
+  revokedAt: integer('revoked_at'),
+  note: text(),
+}, table => [
+  index('license_codes_status_idx').on(table.status),
+  index('license_codes_device_idx').on(table.deviceId),
+])
