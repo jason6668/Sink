@@ -6,7 +6,7 @@ interface NavItem {
   isActive: boolean
 }
 
-const { title } = useAppConfig()
+const { title, logo } = useAppConfig()
 const { isActive } = useDashboardRoute()
 
 const platformItems = computed<NavItem[]>(() => [
@@ -43,6 +43,12 @@ const settingsItems = computed<NavItem[]>(() => [
     icon: DASHBOARD_ROUTES.migrate.icon,
     isActive: isActive('migrate'),
   },
+  {
+    title: 'nav.license',
+    url: '/dashboard/license',
+    icon: DASHBOARD_ROUTES.license.icon,
+    isActive: isActive('license'),
+  },
 ])
 </script>
 
@@ -62,7 +68,7 @@ const settingsItems = computed<NavItem[]>(() => [
                 "
               >
                 <img
-                  src="/sink.png"
+                  :src="logo"
                   alt=""
                   width="32"
                   height="32"
